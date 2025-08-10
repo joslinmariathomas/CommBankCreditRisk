@@ -1,18 +1,30 @@
 # Credit Risk Data Preprocessing Pipeline
-#### Data cleaning and feature engineering pipeline for credit application data, for credit risk modeling workflow.
+#### Sample data cleaning and feature engineering pipeline for credit application data, for credit risk modeling workflow.
 
 ## Overview
 - The dataset used is from [Kaggle Home Credit Risk ](https://www.kaggle.com/competitions/home-credit-default-risk/rules)
 - Scope: application_train dataset (307,511 loan applications, 122 features)
 - Business Context: Consumer credit risk assessment for loan approval decisions
-- Objective: Develop production-ready data preprocessing pipeline for downstream risk modeling
+- Objective: Develop data preprocessing pipeline for downstream risk modeling
 - Note: Dataset is not added to the github repository.
 ## Key Features
-### Real-World Data Challenges Addressed
-- Systematic missing data patterns in housing-related features (70% missingness)
-- Data quality issues requiring domain expertise for resolution
-- Ethical AI considerations
-Feature Engineering Strategy
+### Imputation strategy
+- Housing-Related Features (>70% Missing) : Created binary flags for features with >30% missing values,
+  as the absence itself carries predictive signal. 
+- Credit Bureau Enquiries (`AMT_REQ_CREDIT_BUREAU_*`): Missing values logically represent zero enquiries,
+  indicating lower risk. Imputed with 0 based on business logic.
+- Social Circle Variables (`OBS_30_CNT_SOCIAL_CIRCLE`, `DEF_30_CNT_SOCIAL_CIRCLE`):
+  Missing values indicate no observations in social circle, imputed with 0 following 
+  the same risk-based reasoning.
+- Standard Imputation Approach:
+  `CNT_FAM_MEMBERS`: Median imputation
+  `NAME_TYPE_SUITE`: Mode imputation (NaN assumed as "Unaccompanied")
+  `DAYS_LAST_PHONE_CHANGE`: Median imputation
+- Sophisticated Imputation for External Sources:
+  For `EXT_SOURCE_3`, created composite score averaging available external sources rather than 
+  using simple statistical measures, preserving the predictive relationship between
+  external scoring systems.
+- Ethical AI considerations : Removed `CODE_GENDER` for fair modelling irrespective of gender
 
 ### Feature Engineering Strategy
 #### Financial Health Indicators
