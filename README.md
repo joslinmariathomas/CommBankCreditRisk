@@ -6,7 +6,7 @@
 - Scope: application_train dataset (307,511 loan applications, 122 features)
 - Business Context: Consumer credit risk assessment for loan approval decisions
 - Objective: Develop production-ready data preprocessing pipeline for downstream risk modeling
-
+- Note: Dataset is not added to the github repository.
 ## Key Features
 ### Real-World Data Challenges Addressed
 - Systematic missing data patterns in housing-related features (70% missingness)
