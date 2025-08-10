@@ -26,6 +26,8 @@ def create_income_credit_features(df: pd.DataFrame):
 
 def create_age_employment_features(df: pd.DataFrame) -> pd.DataFrame:
     """Employment stability indicators for risk profiling."""
+    df["age_years"] = abs(df["DAYS_BIRTH"]) / 365.25
+    df["employment_years"] = abs(df["DAYS_EMPLOYED"]) / 365.25
     df["career_stage"] = pd.cut(
         df["age_years"],
         bins=[0, 25, 35, 50, 65, 100],

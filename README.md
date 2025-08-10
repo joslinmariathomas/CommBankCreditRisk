@@ -28,18 +28,19 @@
 
 ### Feature Engineering Strategy
 #### Financial Health Indicators
-- debt_to_income_ratio: Core creditworthiness metric
-- payment_to_income_ratio: Affordability assessment
-- residual_income: Disposable income after credit payments
-- credit_per_family_member: Household debt burden
+- debt_to_income_ratio(`AMT_CREDIT`/`AMT_INCOME_TOTAL`): Core creditworthiness metric
+- payment_to_income_ratio(`AMT_ANNUITY`* 12 /`AMT_INCOME_TOTAL`): Affordability assessment
+- residual_income(`AMT_INCOME_TOTAL` -`AMT_ANNUITY`* 12) : Disposable income after credit payments
 
 #### Life Stage Risk Factors
 - career_stage: Age-based risk categorization
-- employment_stability: Employment duration relative to age
-- years_to_retirement: Income stability timeline
-- young_high_credit: Early-career high-risk flag
+- employment_stability(`employment_years`/`age_years`): Employment duration relative to age
+- years_to_retirement(65 -`age_years`) : Income stability timeline
+- young_high_credit(`age_years` < 30 & `debt_to_income` > 5): Early-career high-risk flag
 
 #### Household Composition Risks
-- children_ratio: Family dependency burden
-- single_parent: Single-income household risk
-- low_income_large_family: Compound vulnerability indicator
+- children_ratio(`CNT_CHILDREN`/`CNT_FAM_MEMBERS`): Family dependency burden
+- single_parent(`CNT_CHILDREN`>0 & `NAME_FAMILY_STATUS` == `Single / not married`): Single-income household risk
+- low_income_large_family(`AMT_INCOME_TOTAL`<25th percentile income & `CNT_FAM_MEMBERS`>=4): 
+  Compound vulnerability indicator
+- credit_per_family_member(`AMT_CREDIT`/`CNT_FAM_MEMBERS`): Household debt burden
