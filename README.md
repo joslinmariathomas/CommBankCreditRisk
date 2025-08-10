@@ -7,6 +7,7 @@
 - Business Context: Consumer credit risk assessment for loan approval decisions
 - Objective: Develop data preprocessing pipeline for downstream risk modeling
 - Note: Dataset is not added to the github repository.
+- Next steps would include adding relevant tests,ML modelling, and data quality & modelling monitoring
 ## Key Features
 ### Imputation strategy
 - Housing-Related Features (>70% Missing) : Created binary flags for features with >30% missing values,
