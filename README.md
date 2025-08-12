@@ -2,7 +2,7 @@
 #### Sample data cleaning and feature engineering pipeline for credit application data, for credit risk modeling workflow.
 
 ## Overview
-- The dataset used is from [Kaggle Home Credit Risk ](https://www.kaggle.com/competitions/home-credit-default-risk/rules)
+- The dataset used is from [Kaggle Home Credit Risk ](https://www.kaggle.com/competitions/home-credit-default-risk/)
 - Scope: application_train dataset (307,511 loan applications, 122 features)
 - Business Context: Consumer credit risk assessment for loan approval decisions
 - Objective: Develop data preprocessing pipeline for downstream risk modeling
