@@ -1,0 +1,8 @@
+matplotlib
+pandas
+numpy
+seaborn
+scikit-learn
+black
+flake8
+imbalanced-learn
