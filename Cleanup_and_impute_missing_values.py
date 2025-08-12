@@ -1,9 +1,10 @@
+import math
 from typing import Any, Dict, List, Optional
 import pandas as pd
 from sklearn.base import BaseEstimator, TransformerMixin
 import warnings
 
-from config import ImputationConfig
+from config import ImputationConfig, EXTRA_COLUMNS_TO_ADD_AS_MISSING_FLAG
 
 
 class Imputation(BaseEstimator, TransformerMixin):
@@ -18,7 +19,7 @@ class Imputation(BaseEstimator, TransformerMixin):
         features_to_impute_zero: Optional[List[str]] = None,
         imputation_strategies: Optional[Dict[str, str]] = None,
         grouping_columns: Optional[Dict[str, List[str]]] = None,
-        missing_flag_threshold: float = 0.3,
+        missing_flag_threshold: float = 0.2,
     ):
         """
         Initialize the Imputation class.
@@ -88,6 +89,7 @@ class Imputation(BaseEstimator, TransformerMixin):
                 X_transformed[f"FLAG_MISS_{feature}"] = (
                     X_transformed[feature].isnull().astype(int)
                 )
+        X_transformed = X_transformed.drop(columns=self.features_to_flag_)
 
         # Apply zero imputation
         for feature in self.features_to_impute_zero:
@@ -142,6 +144,9 @@ class Imputation(BaseEstimator, TransformerMixin):
         high_missing_features = missing_stats[
             missing_stats >= self.missing_flag_threshold
         ].index.tolist()
+        high_missing_features = (
+            high_missing_features + EXTRA_COLUMNS_TO_ADD_AS_MISSING_FLAG
+        )
         return high_missing_features
 
     def _apply_group_median_imputation(
@@ -179,7 +184,7 @@ class Imputation(BaseEstimator, TransformerMixin):
         return X_copy
 
     def _apply_mean_across_features_imputation(
-        self, X: pd.DataFrame, imputed_feature: str, features_list: List[str]
+        self, X: pd.DataFrame, feature: str, features_list: List[str]
     ) -> pd.DataFrame:
         """
         Apply mean across features imputation.
@@ -189,14 +194,12 @@ class Imputation(BaseEstimator, TransformerMixin):
         # Calculate mean across specified features
         available_features = [f for f in features_list if f in X_copy.columns]
         if available_features:
-            X_copy[imputed_feature] = X_copy[available_features].mean(
-                axis=1, skipna=True
-            )
+            X_copy[feature] = X_copy[available_features].mean(axis=1, skipna=True)
 
             # Create imputed versions of original features
             for col in available_features:
-                X_copy[f"{col}_IMPUTED"] = X_copy[col].fillna(X_copy[imputed_feature])
-
+                value_to_impute = X_copy[col].fillna(X_copy[feature]).fillna(0)
+                X_copy[f"{col}_IMPUTED"] = value_to_impute
         return X_copy
 
     def get_feature_info(self) -> Dict[str, Any]:
@@ -224,7 +227,7 @@ def create_imputation_pipeline():
         features_to_impute_zero=config.FEATURES_TO_IMPUTE_ZERO_WHEN_MISSING,
         imputation_strategies=config.VALUE_TO_IMPUTE_DICT_BY_FEATURE,
         grouping_columns=config.GROUPING_COLUMNS,
-        missing_flag_threshold=0.3,
+        missing_flag_threshold=0.2,
     )
 
     return imputer

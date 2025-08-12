@@ -21,10 +21,6 @@
   `CNT_FAM_MEMBERS`: Median imputation
   `NAME_TYPE_SUITE`: Mode imputation (NaN assumed as "Unaccompanied")
   `DAYS_LAST_PHONE_CHANGE`: Median imputation
-- Sophisticated Imputation for External Sources:
-  For `EXT_SOURCE_3`, created composite score averaging available external sources rather than 
-  using simple statistical measures, preserving the predictive relationship between
-  external scoring systems.
 - Ethical AI considerations : Removed `CODE_GENDER` for fair modelling irrespective of gender
 
 ### Feature Engineering Strategy
@@ -45,3 +41,5 @@
 - low_income_large_family(`AMT_INCOME_TOTAL`<25th percentile income & `CNT_FAM_MEMBERS`>=4): 
   Compound vulnerability indicator
 - credit_per_family_member(`AMT_CREDIT`/`CNT_FAM_MEMBERS`): Household debt burden
+
+#### Since the dataset is highly imbalanced - 8% of the data is fraudulent. I have used SMOTE to balancethe dataset.

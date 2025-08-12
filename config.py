@@ -14,7 +14,8 @@ SOCIAL_CIRCLE_COLS_LIST = [
     "OBS_60_CNT_SOCIAL_CIRCLE",
     "DEF_60_CNT_SOCIAL_CIRCLE",
 ]
-COLUMNS_TO_REMOVE = ["CODE_GENDER"]
+EXTRA_COLUMNS_TO_ADD_AS_MISSING_FLAG = ["EXT_SOURCE_2"]
+COLUMNS_TO_REMOVE = ["CODE_GENDER", "DAYS_EMPLOYED"]
 
 
 class ImputationConfig:
@@ -28,18 +29,15 @@ class ImputationConfig:
     # Imputation strategies for different features
     VALUE_TO_IMPUTE_DICT_BY_FEATURE = {
         "CNT_FAM_MEMBERS": "mode",
+        "EXT_SOURCE_3": "mode",
         "NAME_TYPE_SUITE": "Unaccompanied",
         "DAYS_LAST_PHONE_CHANGE": "median",
-        "YEARS_EMPLOYED_IMPUTED": "group_median",
-        "EXT_SOURCE_1": "mean_across_features",
-        "EXT_SOURCE_2": "mean_across_features",
-        "EXT_SOURCE_3": "mean_across_features",
+        "AMT_GOODS_PRICE": "median",
+        "AMT_ANNUITY": "median",
+        "DAYS_EMPLOYED": "group_median",
     }
 
     # Grouping columns for group-based imputation
     GROUPING_COLUMNS = {
-        "YEARS_EMPLOYED_IMPUTED": ["NAME_EDUCATION_TYPE", "CODE_GENDER"],
-        "EXT_SOURCE_1": ["EXT_SOURCE_1", "EXT_SOURCE_2", "EXT_SOURCE_3"],
-        "EXT_SOURCE_2": ["EXT_SOURCE_1", "EXT_SOURCE_2", "EXT_SOURCE_3"],
-        "EXT_SOURCE_3": ["EXT_SOURCE_1", "EXT_SOURCE_2", "EXT_SOURCE_3"],
+        "DAYS_EMPLOYED": ["NAME_EDUCATION_TYPE", "CODE_GENDER"],
     }
